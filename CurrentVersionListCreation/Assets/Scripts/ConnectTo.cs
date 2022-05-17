@@ -5,12 +5,13 @@ using UnityEngine;
 public class ConnectTo : MonoBehaviour
 {
     
-    private string input;
+    static public string input;
+
     public void ReadInput(string ip){
-	input=ip;
- 	Debug.Log(input);
-	//ligar ao endereço ip passado
-}
+		input=ip;
+		Debug.Log(input);
+		//ligar ao endereço ip passado
+	}
 
     
 }

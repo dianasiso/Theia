@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using System;
 using System.Globalization;
+using UnityEngine.Networking;
+using UnityEngine.Networking.NetworkSystem;
+using System.Net;
 
 public class FileSceneScript : MonoBehaviour
 {
@@ -14,11 +17,14 @@ public class FileSceneScript : MonoBehaviour
     [SerializeField] public string selectedFile;
     [SerializeField] public Text selectedFileText;
 
+    [SerializeField] public FileInfo selectedFileInfo;
+
     [SerializeField] public List<FileInfo> infoFiles;
     [SerializeField] private Transform fileContainer;
     [SerializeField] private GameObject filePrefab;
 
     [SerializeField] private List<Item> currentItemList = new List<Item>();
+
     [SerializeField] private Transform listContainer;
     [SerializeField] private Transform itemlistContainer;
     [SerializeField] private GameObject itemPrefab;
@@ -29,10 +35,14 @@ public class FileSceneScript : MonoBehaviour
     
     [SerializeField] private GameObject itemLegend;
 
+
     public Text fileNameInput;
 
-
     string path;
+
+    static NetworkClient client;
+
+    public static bool stateClient;
 
     // Start is called before the first frame update
     void Start()
@@ -41,13 +51,40 @@ public class FileSceneScript : MonoBehaviour
         createFilePopup.SetActive(false);
 
         getFilesFromSystem();
+
+        client = new NetworkClient();
+
+        client.Connect("192.168.0.101", 25000); 
        
-        
+    }
+
+    public void sendServerList() {
+
+        string serverIP = ConnectTo.input;
+
+        List<string> jsonStrings = new List<string>();
+        SerializableList<Item> listToSend = new SerializableList<Item>();
+        string filePath = path + "/" + selectedFileInfo.fileName;
+
+        foreach (string line in System.IO.File.ReadLines(filePath))
+        {  
+            jsonStrings.Add(line);
+        }  
+        foreach(string item in jsonStrings) {
+            listToSend.items.Add(JsonUtility.FromJson<Item>(item));
+        } 
+
+        var listInJson = JsonUtility.ToJson(listToSend);
+        Debug.Log(listInJson);
+        StringMessage msg = new StringMessage();
+        msg.value = listInJson;
+
+        client.Send(666, msg);
+
     }
 
     public void getFilesFromSystem() {
         path = Application.persistentDataPath + "/SavedLists";
-        Debug.Log(path);
         if(Directory.Exists(path)) {
             files = Directory.GetFiles(path, "*.json");
         } else {
@@ -85,7 +122,6 @@ public class FileSceneScript : MonoBehaviour
         itemLegend.transform.SetParent(itemlistContainer);
         foreach(Item item in currentItemList)
         {
-            Debug.Log(item.itemName);
             var item_go = Instantiate(itemPrefab);
             // do something with the instantiated item -- for instance
             var textComponents = item_go.GetComponentsInChildren<Text>();
@@ -102,6 +138,7 @@ public class FileSceneScript : MonoBehaviour
     void OpenPreviewList(FileInfo file) {
         
         selectedFile = file.fileNameWithoutExtension;
+        selectedFileInfo = file;
         selectedFileText.text = selectedFile + ".json";
         currentItemList = new List<Item>();
         int count = 0;
@@ -145,6 +182,11 @@ public class FileSceneScript : MonoBehaviour
     public void CreateFileButtonOnClick() {
         createFilePopup.SetActive(true);
         canvas.SetActive(false);
+    }
+
+    public void GoBack() {
+        client.Disconnect();
+        SceneManager.LoadScene("menu");
     }
 
     public void RemoveFileButtonOnClick() {
@@ -205,4 +247,13 @@ public class FileInfo{
         lastWriteDate = date;
     }
 
+}
+
+[System.Serializable]
+public class SerializableList<Item>{
+    public List<Item> items;
+
+    public SerializableList() {
+        items = new List<Item>();
+    }
 }

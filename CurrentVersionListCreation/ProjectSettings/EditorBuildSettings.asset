@@ -6,14 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/menu.unity
+    guid: c759e6432f7f1da4c980fc096f88ec7d
+  - enabled: 1
     path: Assets/Scenes/ModeMenuScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/ShelfScene.unity
     guid: fff65720620ad47c6926162aeaf1fa06
-  - enabled: 1
-    path: Assets/Scenes/menu.unity
-    guid: c759e6432f7f1da4c980fc096f88ec7d
   - enabled: 1
     path: Assets/Scenes/about.unity
     guid: 7275bd5da4939a34baa9b314e0533911
@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/Scenes/trainee_tut.unity
     guid: b73d5bf750ae3044bb67d608b35679ec
   - enabled: 1
+    path: Assets/Scenes/WorkAreaScene.unity
+    guid: ba65b2e85765d8e4cb0ff7fb9f66ac8c
+  - enabled: 1
     path: Assets/Scenes/trainer_tut.unity
     guid: fa3db2dbc8c2943499b8198a343b359f
   - enabled: 1
@@ -32,9 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FileScene.unity
     guid: 60943c433f18f443581e945540f52b3e
-  - enabled: 1
-    path: Assets/Scenes/WorkAreaScene.unity
-    guid: 49b2e24678a095042be9c59b2fd10a03
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/ScoreScene.unity
     guid: b295dd6e059dd59458eac2a850a81029
