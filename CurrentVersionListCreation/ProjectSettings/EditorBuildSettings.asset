@@ -35,9 +35,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FileScene.unity
     guid: 60943c433f18f443581e945540f52b3e
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/ScoreScene.unity
     guid: b295dd6e059dd59458eac2a850a81029
