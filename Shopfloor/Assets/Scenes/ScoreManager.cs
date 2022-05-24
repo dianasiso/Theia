@@ -37,11 +37,32 @@ public class ScoreManager : MonoBehaviour
         // boltAdic.Add("putInBox", 0);
         // items.Add("BoltA", boltAdic);
 
-        // TODO: Replace hardcoded objectives with reading JSON file
+        // TODO: Replace dir
+        IDictionary<string, string[]> info = new Dictionary<string, string[]>();
+        string[] lines = System.IO.File.ReadAllLines(@"C:/Users/diana/Desktop/FirstOne.json");
+        foreach (string line in lines)
+        {
+            string[] words = line.Split('"');
+            string[] newInfo = new string[] { Char.ToString(words[6][1]), words[9] };
+            info[words[3]] = newInfo;
+        }
+
+
         objectives = new List<Objective>();
-        objectives.Add(new Objective("BoltA", 3));
-        objectives.Add(new Objective("NutA", 2));
+        //objectives.Add(new Objective("BoltA", 3, "x"));
+        //objectives.Add(new Objective("NutA", 2, "y"));
+
+        foreach (KeyValuePair<string, string[]> kvp in info)
+        {
+            Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, String.Join(" - ", kvp.Value));
+            Debug.Log($"------------->: {kvp.Key}");
+            Debug.Log($"------------->: {kvp.Value[0]}");
+            Debug.Log($"------------->: {kvp.Value[1]}");
+            objectives.Add(new Objective(kvp.Key, Int32.Parse(kvp.Value[0]), kvp.Value[1]));
+        }
+
         curObjIdx = 0;
+
         Debug.Log($"objectives length: {objectives.Count}");
         Debug.Log($"Current objective: {objectives[curObjIdx]}");
 
