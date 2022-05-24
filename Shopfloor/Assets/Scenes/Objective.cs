@@ -7,11 +7,13 @@ public class Objective
     public string item;
     public int goal;
     public int count;
+    public string location;
 
-    public Objective(string item, int goal) 
+    public Objective(string item, int goal, string location) 
     {
         this.item = item;
         this.goal = goal;
+        this.location = location;
         count = 0;
     }
 
@@ -27,6 +29,6 @@ public class Objective
 
     public override string ToString()
     {
-        return $"{item}: {count}/{goal}";
+        return $"{item}: {count}/{goal}  -  {location}";
     }
 }
